@@ -18,7 +18,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Plus } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Clock, Calendar } from 'lucide-react';
+import { Clock } from 'lucide-react';
 
 interface Client {
     id: number;
@@ -359,7 +359,7 @@ export const AdminClients: React.FC = () => {
                                                 <div className="relative group/select">
                                                     <select
                                                         value={client.priceLevelId}
-                                                        onChange={(e) => {
+                                                        onChange={() => {
                                                             alert(`Cenová hladina pre ${client.companyName} bola zmenená!`);
                                                         }}
                                                         className={`

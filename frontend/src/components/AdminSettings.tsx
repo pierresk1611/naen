@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Sheet, Table, FileSpreadsheet, Key, Save, Plug, AlertCircle, Trash2 } from 'lucide-react';
+import { Table, FileSpreadsheet, Key, Save, Plug, AlertCircle, Trash2 } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export const AdminSettings: React.FC = () => {
@@ -162,7 +162,7 @@ export const AdminSettings: React.FC = () => {
                                             </div>
 
                                             <div className="space-y-3">
-                                                {priceLevels.map((level, index) => (
+                                                {priceLevels.map((level) => (
                                                     <div key={level.id} className="grid grid-cols-12 gap-4 items-end animate-in fade-in slide-in-from-left-2 duration-300">
                                                         <div className="col-span-1 flex items-center justify-center pb-2">
                                                             <span className="font-mono text-[10px] font-bold text-green-800/40">#{level.id}</span>
