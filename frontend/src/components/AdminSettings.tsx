@@ -38,7 +38,7 @@ export const AdminSettings: React.FC = () => {
         ));
     };
 
-    const [sheets, setSheets] = React.useState([
+    const [sheets] = React.useState([
         { id: 1, name: 'Cenník - Malokarpatská', sheetId: '1BxiMvs0XRA5nLRd-g4CO_...', gid: '0', status: 'active' },
         { id: 2, name: 'Cenník - Rakúsko', sheetId: '1BxiMvs0XRA5nLRd-g4CO_...', gid: '1244', status: 'active' },
         { id: 3, name: 'Skladové Zásoby (Externé)', sheetId: '1BxiMvs0XRA5nLRd-g4CO_...', gid: '5521', status: 'error' },
@@ -55,7 +55,7 @@ export const AdminSettings: React.FC = () => {
                     <Badge variant="outline" className="rounded-full border-black/10 text-black/40 font-bold text-[9px] tracking-widest uppercase italic">System Configuration</Badge>
                     <h2 className="text-6xl font-black uppercase tracking-tighter italic leading-none">Nastavenia</h2>
                 </div>
-                <Button className="bg-black text-white hover:bg-primary hover:text-white rounded-full px-8 py-6 font-black uppercase tracking-widest text-xs transition-all">
+                <Button onClick={handleSaveKros} className="bg-black text-white hover:bg-primary hover:text-white rounded-full px-8 py-6 font-black uppercase tracking-widest text-xs transition-all">
                     <Save className="mr-2 h-4 w-4" /> Uložiť Zmeny
                 </Button>
             </div>

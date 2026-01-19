@@ -2,9 +2,14 @@ import React from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { Button } from '@/components/ui/button';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import {
+    Card,
+    CardContent,
+} from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { MapPin, Navigation, CheckCircle2, Phone, Package, Calendar, Search } from 'lucide-react';
+import {
+    MapPin, Navigation, CheckCircle2, Phone, Package, Search
+} from 'lucide-react';
 import { Input } from '@/components/ui/input';
 
 interface Order {
@@ -132,26 +137,27 @@ export const AdminLogistics: React.FC = () => {
                   group cursor-pointer rounded-[1.5rem] border-none transition-all duration-300 relative overflow-hidden
                   ${selectedOrders.includes(order.id)
                                         ? 'bg-primary text-white shadow-2xl shadow-primary/30 ring-4 ring-primary/20'
-                                        : 'bg-white hover:bg-black/5 shadow-xl shadow-black/5'}
+                                        : 'bg-white hover:bg-black/5 shadow-xl shadow-black/5'
+                                    }
                   ${isPicked && !selectedOrders.includes(order.id) ? 'opacity-30 pointer-events-none' : ''}
-                `}
+`}
                             >
                                 <CardContent className="p-6">
                                     <div className="flex justify-between items-start gap-6">
                                         <div className="space-y-4 flex-1">
                                             <div className="flex items-center gap-3">
-                                                <span className={`font-mono text-[10px] font-bold uppercase tracking-widest ${selectedOrders.includes(order.id) ? 'opacity-60' : 'opacity-30'}`}>
+                                                <span className={`font-mono text-[10px] font-bold uppercase tracking-widest ${selectedOrders.includes(order.id) ? 'opacity-60' : 'opacity-30'} `}>
                                                     #WEB-{order.id}
                                                 </span>
-                                                <div className={`h-1 w-1 rounded-full ${selectedOrders.includes(order.id) ? 'bg-white/40' : 'bg-black/10'}`} />
-                                                <span className={`font-mono text-[10px] font-bold uppercase tracking-widest ${selectedOrders.includes(order.id) ? 'opacity-60' : 'opacity-30'}`}>
+                                                <div className={`h-1 w-1 rounded-full ${selectedOrders.includes(order.id) ? 'bg-white/40' : 'bg-black/10'} `} />
+                                                <span className={`font-mono text-[10px] font-bold uppercase tracking-widest ${selectedOrders.includes(order.id) ? 'opacity-60' : 'opacity-30'} `}>
                                                     {new Date(order.createdAt).toLocaleDateString()}
                                                 </span>
                                             </div>
 
                                             <div className="space-y-1">
                                                 <h4 className="text-xl font-black uppercase tracking-tight leading-none">{order.user.companyName}</h4>
-                                                <div className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest ${selectedOrders.includes(order.id) ? 'text-white/70' : 'text-black/40'}`}>
+                                                <div className={`flex items-center gap-2 text-[10px] font-bold uppercase tracking-widest ${selectedOrders.includes(order.id) ? 'text-white/70' : 'text-black/40'} `}>
                                                     <MapPin className="h-3 w-3" />
                                                     {order.user.street}, {order.user.city}
                                                 </div>
@@ -159,11 +165,11 @@ export const AdminLogistics: React.FC = () => {
 
                                             <div className="flex gap-6 items-center pt-2">
                                                 <div className="flex items-center gap-2">
-                                                    <Package className={`h-4 w-4 ${selectedOrders.includes(order.id) ? 'text-white/60' : 'text-primary'}`} />
+                                                    <Package className={`h-4 w-4 ${selectedOrders.includes(order.id) ? 'text-white/60' : 'text-primary'} `} />
                                                     <span className="text-sm font-black italic">{order.items.reduce((acc, i) => acc + i.quantity, 0)} <span className="text-[10px] uppercase opacity-50 not-italic">ks</span></span>
                                                 </div>
                                                 <div className="flex items-center gap-2">
-                                                    <Phone className={`h-3 w-3 ${selectedOrders.includes(order.id) ? 'text-white/40' : 'opacity-20'}`} />
+                                                    <Phone className={`h-3 w-3 ${selectedOrders.includes(order.id) ? 'text-white/40' : 'opacity-20'} `} />
                                                     <span className="text-[10px] font-bold uppercase tracking-widest opacity-60">{order.user.phone}</span>
                                                 </div>
                                             </div>
@@ -171,13 +177,13 @@ export const AdminLogistics: React.FC = () => {
 
                                         <div className="flex flex-col items-end justify-between self-stretch">
                                             <div className={`
-                          h-10 w-10 rounded-full flex items-center justify-center transition-all
+h-10 w-10 rounded-full flex items-center justify-center transition-all
                           ${selectedOrders.includes(order.id) ? 'bg-white text-primary' : 'bg-black/5 text-black/10 group-hover:bg-primary/10 group-hover:text-primary'}
-                       `}>
+`}>
                                                 <CheckCircle2 className={`h-6 w-6 ${selectedOrders.includes(order.id) ? 'scale-100' : 'scale-0'} transition-transform`} />
                                             </div>
                                             <div className="text-right">
-                                                <span className={`block text-2xl font-black tracking-tighter ${selectedOrders.includes(order.id) ? 'text-white' : 'text-black'}`}>
+                                                <span className={`block text-2xl font-black tracking-tighter ${selectedOrders.includes(order.id) ? 'text-white' : 'text-black'} `}>
                                                     {parseFloat(order.totalPrice).toFixed(2)} €
                                                 </span>
                                             </div>
@@ -205,13 +211,13 @@ export const AdminLogistics: React.FC = () => {
                                     <span className="block text-[10px] font-black uppercase tracking-widest opacity-40">Vybrané body</span>
                                     <span className="block text-3xl font-black">{selectedOrders.length}</span>
                                 </div>
-                                <Navigation className={`h-8 w-8 transition-all ${selectedOrders.length > 0 ? 'text-primary animate-bounce' : 'opacity-10'}`} />
+                                <Navigation className={`h-8 w-8 transition-all ${selectedOrders.length > 0 ? 'text-primary animate-bounce' : 'opacity-10'} `} />
                             </div>
 
                             {/* Required Goods Summary */}
-                            <div className={`rounded-2xl p-6 space-y-4 border transition-all ${isPicked ? 'bg-green-50 border-green-100' : 'bg-orange-50 border-orange-100'}`}>
+                            <div className={`rounded-2xl p-6 space-y-4 border transition-all ${isPicked ? 'bg-green-50 border-green-100' : 'bg-orange-50 border-orange-100'} `}>
                                 <div className="flex items-center justify-between">
-                                    <div className={`flex items-center gap-2 ${isPicked ? 'text-green-700' : 'text-orange-700'}`}>
+                                    <div className={`flex items-center gap-2 ${isPicked ? 'text-green-700' : 'text-orange-700'} `}>
                                         <Package className="h-5 w-5" />
                                         <h4 className="font-black uppercase tracking-widest text-xs">Súhrn Tovaru (Pick List)</h4>
                                     </div>
@@ -234,16 +240,16 @@ export const AdminLogistics: React.FC = () => {
                                         ).map(([name, qty]) => {
                                             const status = getStockStatus(name, qty);
                                             return (
-                                                <div key={name} className={`flex justify-between items-center text-xs border-b pb-2 last:border-0 last:pb-0 ${isPicked ? 'border-green-200/50' : 'border-orange-200/50'}`}>
+                                                <div key={name} className={`flex justify-between items-center text-xs border-b pb-2 last:border-0 last:pb-0 ${isPicked ? 'border-green-200/50' : 'border-orange-200/50'} `}>
                                                     <div className="flex flex-col">
-                                                        <span className={`font-bold ${isPicked ? 'text-green-900/80' : 'text-orange-900/80'}`}>{name}</span>
+                                                        <span className={`font-bold ${isPicked ? 'text-green-900/80' : 'text-orange-900/80'} `}>{name}</span>
                                                         {!status.hasStock && (
                                                             <span className="text-[9px] font-black text-destructive uppercase tracking-widest">
                                                                 Chýba: {status.missing} ks (Doobjednať!)
                                                             </span>
                                                         )}
                                                     </div>
-                                                    <span className={`font-mono font-black ${isPicked ? 'text-green-600' : 'text-orange-600'}`}>
+                                                    <span className={`font-mono font-black ${isPicked ? 'text-green-600' : 'text-orange-600'} `}>
                                                         {qty} <span className="text-[9px] opacity-50">/ {status.stock}</span>
                                                     </span>
                                                 </div>
@@ -320,7 +326,3 @@ export const AdminLogistics: React.FC = () => {
         </div>
     );
 };
-
-const Loader2 = ({ className }: { className?: string }) => (
-    <svg className={className} xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56" /></svg>
-);
