@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery } from '@tanstack/react-query';
-import axios from 'axios';
+import api from '@/lib/api';
 import {
     Table,
     TableBody,
@@ -26,7 +26,7 @@ export const AdminStockTable: React.FC = () => {
     const { data: products, isLoading } = useQuery<Product[]>({
         queryKey: ['products'],
         queryFn: async () => {
-            const response = await axios.get('http://localhost:3000/products');
+            const response = await api.get('/products');
             return response.data;
         },
     });

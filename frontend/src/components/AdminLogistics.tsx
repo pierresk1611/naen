@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import api from '@/lib/api';
 import { Button } from '@/components/ui/button';
 import {
     Card,
@@ -47,7 +47,7 @@ export const AdminLogistics: React.FC = () => {
     const { data: orders, isLoading: isLoadingOrders } = useQuery<Order[]>({
         queryKey: ['admin-orders-logistics'],
         queryFn: async () => {
-            const response = await axios.get('http://localhost:3000/orders');
+            const response = await api.get('/orders');
             return response.data;
         },
     });
@@ -55,7 +55,7 @@ export const AdminLogistics: React.FC = () => {
     const { data: products } = useQuery<any[]>({
         queryKey: ['products-logistics'],
         queryFn: async () => {
-            const response = await axios.get('http://localhost:3000/products');
+            const response = await api.get('/products');
             return response.data;
         },
     });
@@ -69,7 +69,7 @@ export const AdminLogistics: React.FC = () => {
 
     const optimizeMutation = useMutation({
         mutationFn: async () => {
-            const response = await axios.post('http://localhost:3000/logistics/optimize', {
+            const response = await api.post('/logistics/optimize', {
                 orderIds: selectedOrders
             });
             // Enrich mock route data with order details for the driver

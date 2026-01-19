@@ -9,7 +9,7 @@ import { LoginForm } from './components/LoginForm'
 import { CustomerAccount } from './components/CustomerAccount'
 import { CartSheet } from './components/CartSheet'
 import { useMutation, useQuery } from '@tanstack/react-query'
-import axios from 'axios'
+import api from './lib/api'
 import { Button } from './components/ui/button'
 import { ShoppingBag, User, LogOut, LayoutGrid, ClipboardList, Users, Menu, Settings, Megaphone } from 'lucide-react'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
@@ -36,7 +36,7 @@ function App() {
   const { data: products } = useQuery({
     queryKey: ['products'],
     queryFn: async () => {
-      const response = await axios.get('http://localhost:3000/products')
+      const response = await api.get('/products')
       return response.data
     },
     enabled: !!userRole
@@ -82,7 +82,7 @@ function App() {
         status: 'PENDING',
         deliveryDate: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString(),
       }
-      return axios.post('http://localhost:3000/orders', payload)
+      return api.post('/orders', payload)
     },
     onSuccess: () => {
       alert('Objednávka bola úspešne odoslaná!')

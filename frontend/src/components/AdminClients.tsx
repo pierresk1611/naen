@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import api from '@/lib/api';
 import {
     Table,
     TableBody,
@@ -43,7 +43,7 @@ export const AdminClients: React.FC = () => {
     const { data: clients, isLoading } = useQuery<Client[]>({
         queryKey: ['clients'],
         queryFn: async () => {
-            const res = await axios.get('http://localhost:3000/users');
+            const res = await api.get('/users');
             return res.data;
         },
     });
@@ -51,7 +51,7 @@ export const AdminClients: React.FC = () => {
     const { data: products } = useQuery<Product[]>({
         queryKey: ['products-list'],
         queryFn: async () => {
-            const res = await axios.get('http://localhost:3000/products');
+            const res = await api.get('/products');
             return res.data;
         }
     });
@@ -78,7 +78,7 @@ export const AdminClients: React.FC = () => {
                 ...newPartner,
                 deliveryDays: newPartner.deliveryDays.length > 0 ? newPartner.deliveryDays.join(',') : undefined
             };
-            await axios.post('http://localhost:3000/users', payload);
+            await api.post('/users', payload);
         },
         onSuccess: () => {
             alert('Partner bol úspešne vytvorený!');

@@ -5,8 +5,9 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Table, FileSpreadsheet, Key, Save, Plug, AlertCircle, Trash2 } from 'lucide-react';
+import { Table, FileSpreadsheet, Key, Save, Plug, AlertCircle, Trash2, Plus } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 
 export const AdminSettings: React.FC = () => {
     // Mock state for settings
@@ -38,11 +39,28 @@ export const AdminSettings: React.FC = () => {
         ));
     };
 
-    const [sheets] = React.useState([
+    const [sheets, setSheets] = React.useState([
         { id: 1, name: 'Cenník - Malokarpatská', sheetId: '1BxiMvs0XRA5nLRd-g4CO_...', gid: '0', status: 'active' },
         { id: 2, name: 'Cenník - Rakúsko', sheetId: '1BxiMvs0XRA5nLRd-g4CO_...', gid: '1244', status: 'active' },
         { id: 3, name: 'Skladové Zásoby (Externé)', sheetId: '1BxiMvs0XRA5nLRd-g4CO_...', gid: '5521', status: 'error' },
     ]);
+
+    const [isAddSheetOpen, setIsAddSheetOpen] = React.useState(false);
+    const [newSheetData, setNewSheetData] = React.useState({ name: '', sheetId: '', gid: '' });
+
+    const handleAddSheet = () => {
+        const newSheet = {
+            id: sheets.length + 1,
+            name: newSheetData.name,
+            sheetId: newSheetData.sheetId,
+            gid: newSheetData.gid,
+            status: 'active' as const // or simple string if type allows
+        };
+        // @ts-ignore
+        setSheets([...sheets, newSheet]);
+        setIsAddSheetOpen(false);
+        setNewSheetData({ name: '', sheetId: '', gid: '' });
+    };
 
     const handleSaveKros = () => {
         alert('KROS nastavenia boli uložené! (Mock)');
@@ -240,9 +258,53 @@ export const AdminSettings: React.FC = () => {
                                     </div>
                                 ))}
                                 <div className="p-6 bg-black/[0.02] flex justify-center">
-                                    <Button variant="outline" className="text-[10px] font-black uppercase tracking-widest border-dashed border-black/20 hover:border-black hover:bg-transparent">
-                                        + Pridať Nový Zdroj (Sheet)
-                                    </Button>
+                                    <Sheet open={isAddSheetOpen} onOpenChange={setIsAddSheetOpen}>
+                                        <SheetTrigger asChild>
+                                            <Button variant="outline" className="text-[10px] font-black uppercase tracking-widest border-dashed border-black/20 hover:border-black hover:bg-transparent">
+                                                <Plus className="h-3 w-3 mr-2" /> Pridať Nový Zdroj (Sheet)
+                                            </Button>
+                                        </SheetTrigger>
+                                        <SheetContent className="w-[400px] sm:w-[540px] bg-[#fbfaf8]">
+                                            <SheetHeader className="mb-8">
+                                                <SheetTitle className="text-3xl font-black uppercase tracking-tighter">Pridať Google Sheet</SheetTitle>
+                                            </SheetHeader>
+                                            <div className="space-y-6">
+                                                <div className="space-y-2">
+                                                    <Label className="uppercase text-[10px] font-black tracking-widest opacity-40">Názov Zdroja</Label>
+                                                    <Input
+                                                        value={newSheetData.name}
+                                                        onChange={(e) => setNewSheetData({ ...newSheetData, name: e.target.value })}
+                                                        placeholder="Napr. Cenník 2024"
+                                                        className="h-12 bg-white border-black/5 font-bold uppercase tracking-tight"
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label className="uppercase text-[10px] font-black tracking-widest opacity-40">Sheet ID</Label>
+                                                    <Input
+                                                        value={newSheetData.sheetId}
+                                                        onChange={(e) => setNewSheetData({ ...newSheetData, sheetId: e.target.value })}
+                                                        placeholder="1BxiMvs0..."
+                                                        className="h-12 bg-white border-black/5 font-mono text-xs"
+                                                    />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label className="uppercase text-[10px] font-black tracking-widest opacity-40">GID (Sheet Tab ID)</Label>
+                                                    <Input
+                                                        value={newSheetData.gid}
+                                                        onChange={(e) => setNewSheetData({ ...newSheetData, gid: e.target.value })}
+                                                        placeholder="0"
+                                                        className="h-12 bg-white border-black/5 font-mono text-xs"
+                                                    />
+                                                </div>
+                                                <Button
+                                                    onClick={handleAddSheet}
+                                                    className="w-full h-14 bg-black text-white hover:bg-primary rounded-xl font-black uppercase tracking-widest text-xs mt-4"
+                                                >
+                                                    Uložiť Sheet
+                                                </Button>
+                                            </div>
+                                        </SheetContent>
+                                    </Sheet>
                                 </div>
                             </div>
                         </CardContent>

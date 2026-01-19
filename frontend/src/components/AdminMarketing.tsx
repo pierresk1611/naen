@@ -1,6 +1,6 @@
 import React from 'react';
 import { useQuery, useMutation } from '@tanstack/react-query';
-import axios from 'axios';
+import api from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -47,7 +47,7 @@ export const AdminMarketing: React.FC = () => {
     const { data: vouchers } = useQuery<Voucher[]>({
         queryKey: ['vouchers'],
         queryFn: async () => {
-            const res = await axios.get('http://localhost:3000/vouchers');
+            const res = await api.get('/vouchers');
             return res.data;
         }
     });
@@ -69,7 +69,7 @@ export const AdminMarketing: React.FC = () => {
     const { data: products } = useQuery<Product[]>({
         queryKey: ['products-list'],
         queryFn: async () => {
-            const res = await axios.get('http://localhost:3000/products');
+            const res = await api.get('/products');
             return res.data;
         }
     });
@@ -85,7 +85,7 @@ export const AdminMarketing: React.FC = () => {
                 targetUserIds: targetType === 'SPECIFIC_USERS' ? selectedPartners : undefined,
                 targetProductIds: targetType === 'SPECIFIC_PRODUCTS' ? selectedProducts : undefined,
             };
-            await axios.post('http://localhost:3000/vouchers', payload);
+            await api.post('/vouchers', payload);
         },
         onSuccess: () => {
             alert('Kupón bol úspešne vytvorený!');
