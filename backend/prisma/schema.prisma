@@ -1,0 +1,116 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model User {
+  id             Int      @id @default(autoincrement())
+  email          String   @unique
+  password       String   // Hashed
+  companyName    String
+  role           String   @default("CUSTOMER") // "CUSTOMER" or "SUPPLIER"
+  ico            String?
+  dic            String?
+  phone          String?
+  priceLevelId   Int      @default(1) // 1=Gastro, 2=VIP, etc.
+  addressLat     Float?
+  addressLng     Float?
+  street         String?
+  city           String?
+  zip            String?
+  deliveryTimeFrom String? // e.g. "08:00"
+  deliveryTimeTo   String? // e.g. "12:00"
+  deliveryDays     String? // e.g. "PO,UT,STR"
+  orders         Order[]
+  vouchers       Voucher[] @relation("UserVouchers")
+  suppliedProducts Product[] @relation("SupplierProducts")
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+}
+
+model Voucher {
+  id             Int       @id @default(autoincrement())
+  code           String    @unique // e.g. "VALENTIN20"
+  discountValue  Decimal
+  discountType   String    // "PERCENTAGE" or "FIXED"
+  
+  // Targeting
+  targetType     String    // "GLOBAL", "PRICE_LEVEL", "SPECIFIC_USERS"
+  targetPriceLevelId Int?  // Use if targetType == PRICE_LEVEL
+  
+  // Relations
+  specificUsers  User[]    @relation("UserVouchers")
+  specificProducts Product[] @relation("VoucherProducts")
+  
+  validFrom      DateTime?
+  validUntil     DateTime?
+  isActive       Boolean   @default(true)
+  
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Product {
+  id            Int            @id @default(autoincrement())
+  sku           String         @unique
+  name          String
+  // Logistika
+  stockKros     Int            @default(0)   // Sync z KROSu (Read-only)
+  packagingUnit Int            @default(6)   // Kartón (6ks)
+  // Vizuál
+  imageUrl      String?        // Shoptet URL
+  isActive      Boolean        @default(true)
+  
+  prices        ProductPrice[]
+  orderItems    OrderItem[]
+  vouchers      Voucher[]      @relation("VoucherProducts")
+  suppliers     User[]         @relation("SupplierProducts")
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+}
+
+model ProductPrice {
+  id           Int      @id @default(autoincrement())
+  productId    Int
+  priceLevelId Int
+  price        Decimal
+  product      Product  @relation(fields: [productId], references: [id])
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  
+  @@unique([productId, priceLevelId])
+}
+
+model Order {
+  id             Int         @id @default(autoincrement())
+  userId         Int
+  user           User        @relation(fields: [userId], references: [id])
+  totalPrice     Decimal
+  status         String      @default("PENDING") // PENDING, PROCESSING, COMPLETED, CANCELLED
+  deliveryDate   DateTime?
+  krosExportedAt DateTime?
+  items          OrderItem[]
+  createdAt      DateTime    @default(now())
+  updatedAt      DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int
+  productId Int
+  quantity  Int     // Validované na násobky 6
+  price     Decimal
+  product   Product @relation(fields: [productId], references: [id])
+  order     Order   @relation(fields: [orderId], references: [id])
+}
+
